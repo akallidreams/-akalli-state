@@ -10,7 +10,7 @@ This package helps to use redux toolkit in an easier way just sending your slice
 
 ## Instalation
 
-`npm install @akalli/state react-redux redux-persist redux-persist-transform-filter @react-native-async-storage/async-storage @reduxjs/toolkit`
+`npm install @akalli/state react-redux redux-persist redux-persist-transform-filter @reduxjs/toolkit @react-native-async-storage/async-storage`
 
 Example:
 

@@ -3,8 +3,8 @@ import {
   configureStore,
   getDefaultMiddleware,
 } from "@reduxjs/toolkit";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 // import thunk from 'redux-thunk'
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createWhitelistFilter } from "redux-persist-transform-filter";
 import { persistReducer } from "redux-persist";
 import { useDispatch } from "react-redux";
