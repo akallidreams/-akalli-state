@@ -1,24 +1,19 @@
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import { QueryClient, QueryClientProvider } from "react-query";
 import React from "react";
-
-const queryClient = new QueryClient();
 
 // FIXME: fix types here
 interface IProps {
   store: any;
   persistor: any;
-  Router: React.ElementType;
+  children: React.ReactNode | React.ReactNode[];
 }
 
-export const StateProvider = ({ store, persistor, Router }: IProps) => {
+export const StateProvider = ({ store, persistor, children }: IProps) => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <QueryClientProvider client={queryClient}>
-          <Router />
-        </QueryClientProvider>
+        {children}
       </PersistGate>
     </Provider>
   );

@@ -1,24 +1,58 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
+import { AkState } from "./src";
+import { createSlice } from "@reduxjs/toolkit";
+import { StateProvider } from "./src/components";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
-import { configure, getStorybookUI } from "@storybook/react-native";
+interface IState {
+  auth: IAuthState;
+}
 
-configure(() => {
-  // Since require.context doesn't exist in metro bundler world, we have to
-  // manually import files ending in *.stories.js
-  require("./.storybook/stories");
-}, module);
+interface IAuthState {
+  isLoggedIn: boolean;
+}
 
-export default getStorybookUI();
+const slice = createSlice({
+  name: "auth",
+  initialState: { isLoggedIn: false },
+  reducers: {
+    login: (state: IAuthState) => {
+      state.isLoggedIn = true;
+    },
+  },
+});
 
-export function App() {
+export const { clearStore, store, useAppDispatch, persistor } =
+  AkState.reduxInit({
+    auth: slice.reducer,
+  });
+
+export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <StateProvider store={store} persistor={persistor}>
+      <View style={styles.container}>
+        <Text>Open up App.tsx to start working on your app!</Text>
+        <StatusBar style="auto" />
+        <ChildComponent />
+      </View>
+    </StateProvider>
   );
 }
+
+const ChildComponent = () => {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(slice.actions.login());
+  }, []);
+  const isLoggedIn = useSelector((state: IState) => state?.auth?.isLoggedIn);
+  if (isLoggedIn) {
+    return <Text>You are logged in</Text>;
+  } else {
+    return <Text>You are not logged in</Text>;
+  }
+};
 
 const styles = StyleSheet.create({
   container: {
